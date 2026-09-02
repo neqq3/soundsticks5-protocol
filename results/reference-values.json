@@ -59,7 +59,9 @@
       "command": 227,
       "length": 97,
       "separator_after_length": 0,
-      "body_prefix_hex": "c2 07 80 bb 00 00 00",
+      "body_prefix_hex": "c2 07 80 bb 00 00",
+      "band_layout": "filter_type u8, gain f32le, frequency f32le, q f32le",
+      "sample_rate_hz": 48000,
       "total_frame_bytes": 101
     },
     "response_frame": {
@@ -70,15 +72,42 @@
       "then": "same 97-byte body as write frame"
     },
     "app_reset": "reset edits all gains to zero; confirmation sends the full E3 snapshot",
-    "ui_gain_range_status": "unknown",
+    "app_ui_steps": {"minimum": -12, "maximum": 12, "count": 25},
+    "normal_gain_db_per_ui_step": 0.5,
+    "normal_gain_db_range": [-6.0, 6.0],
+    "first_band_negative_app_correction": 1.5,
+    "first_band_negative_endpoint_db_status": "App code maps -12 to -9.0 dB; live endpoint capture pending",
     "bands": [
-      {"index": 0, "frequency_hz": 125, "q_observed": 0.707, "mode_byte": 1},
-      {"index": 1, "frequency_hz": 250, "q_observed": 2.0, "mode_byte": 1},
-      {"index": 2, "frequency_hz": 500, "q_observed": 2.0, "mode_byte": 1},
-      {"index": 3, "frequency_hz": 1000, "q_observed": 2.0, "mode_byte": 1},
-      {"index": 4, "frequency_hz": 2000, "q_observed": 2.0, "mode_byte": 1},
-      {"index": 5, "frequency_hz": 4000, "q_observed": 2.0, "mode_byte": 2},
-      {"index": 6, "frequency_hz": 8000, "q_observed": 0.707, "mode_byte": null}
+      {"index": 0, "frequency_hz": 125, "q_observed": 0.707, "filter_type": 0, "filter_name": "low_shelf"},
+      {"index": 1, "frequency_hz": 250, "q_observed": 2.0, "filter_type": 1, "filter_name": "peaking_eq"},
+      {"index": 2, "frequency_hz": 500, "q_observed": 2.0, "filter_type": 1, "filter_name": "peaking_eq"},
+      {"index": 3, "frequency_hz": 1000, "q_observed": 2.0, "filter_type": 1, "filter_name": "peaking_eq"},
+      {"index": 4, "frequency_hz": 2000, "q_observed": 2.0, "filter_type": 1, "filter_name": "peaking_eq"},
+      {"index": 5, "frequency_hz": 4000, "q_observed": 2.0, "filter_type": 1, "filter_name": "peaking_eq"},
+      {"index": 6, "frequency_hz": 8000, "q_observed": 0.707, "filter_type": 2, "filter_name": "high_shelf"}
     ]
+  },
+  "audio_volume": {
+    "state_field": "cmd 0x42 tag 0x42",
+    "standard": "AVRCP Absolute Volume",
+    "avrcp_transport_standard_raw_range": [0, 127],
+    "ble_state_percent_range": [0, 100],
+    "ble_state_is_direct_percent": true,
+    "ble_set": {
+      "frame_template": "aa 43 04 00 42 01 <percent>",
+      "percent_range": [0, 100],
+      "success_ack": "aa 00 02 43 00",
+      "state_notification_template": "aa 42 04 00 42 01 <percent>",
+      "captured_values": [3, 0],
+      "works_when_app_device_is_not_the_a2dp_source": true
+    },
+    "observed_volume_down_sequence": [18, 15, 12, 0, 0],
+    "observed_single_step_delta": -3,
+    "observed_volume_up_sequence": [0, 3, 100, 100],
+    "observed_single_step_up_delta": 3,
+    "minimum_observed": 0,
+    "maximum_observed": 100,
+    "boundary_behavior": "saturates at 0 and 100",
+    "note": "Maximum was tested with the Bluetooth sink muted, software volume at zero, no sink inputs, and no audio playback or injection. Hardware volume was restored to zero afterward."
   }
 }

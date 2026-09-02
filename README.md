@@ -87,6 +87,7 @@ python tools/app_actions.py reset-eq
 - [FACTS.md](FACTS.md)：最高优先级事实基线
 - [docs/protocol.md](docs/protocol.md)：协议结构和已确认命令
 - [docs/app-reference.md](docs/app-reference.md)：App 属性、主题、默认值和 EQ 参考
+- [docs/audio-volume.md](docs/audio-volume.md)：AVRCP 音量标尺与无声步进实验
 - [docs/capture-and-analysis.md](docs/capture-and-analysis.md)：可复现抓取与分析方法
 - [docs/safety.md](docs/safety.md)：安全边界
 - [docs/research-questions.md](docs/research-questions.md)：待复核问题与建议实验

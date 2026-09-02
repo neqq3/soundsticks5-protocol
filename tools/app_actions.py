@@ -17,6 +17,7 @@ from ss5_actions import (
     build_light,
     build_speed,
     build_theme,
+    build_volume,
 )
 from ss5_protocol import ProtocolError
 
@@ -30,6 +31,9 @@ def parser() -> argparse.ArgumentParser:
 
     brightness = sub.add_parser("brightness")
     brightness.add_argument("value", type=int)
+
+    volume = sub.add_parser("volume")
+    volume.add_argument("value", type=int, help="absolute hardware volume, 0..100")
 
     speed = sub.add_parser("speed")
     speed.add_argument("level", choices=("low", "medium", "high", "1", "2", "3"))
@@ -58,6 +62,8 @@ def main() -> int:
             frame = build_light(args.state == "on")
         elif args.action == "brightness":
             frame = build_brightness(args.value)
+        elif args.action == "volume":
+            frame = build_volume(args.value)
         elif args.action == "speed":
             frame = build_speed(args.level)
         elif args.action == "theme":

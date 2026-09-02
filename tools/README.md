@@ -19,6 +19,16 @@ The tool deliberately has no arbitrary-write option. It fresh-scans the requeste
 the returned `BLEDevice` object to Bleak, reducing stale-RPA failures. It refuses to query a connected
 device unless the private control service UUID is present.
 
+The one explicit setting operation is confirmed private-BLE hardware volume. It requires a confirmation
+flag, reports the ACK/state notifications, and never starts an audio stream:
+
+```bash
+python tools/ss5_ble.py set-volume --address <address-from-the-fresh-scan> --value 25 --confirm
+```
+
+Volume can be unexpectedly loud. Start at zero and verify the returned `0x42/tag 0x42` state instead of
+assuming the requested value was applied.
+
 The scanner prints every advertisement. An unnamed advertisement can be relevant; inspect the current
 address and then use `discover`. Do not automatically connect every nearby unnamed device.
 
@@ -39,6 +49,7 @@ connection or send path.
 ```bash
 python tools/app_actions.py light on
 python tools/app_actions.py brightness 50
+python tools/app_actions.py volume 25
 python tools/app_actions.py speed medium
 python tools/app_actions.py theme sunrise
 python tools/app_actions.py color sunrise 42
@@ -47,9 +58,11 @@ python tools/app_actions.py eq 0.5 0 0 0 0 0 0
 python tools/app_actions.py reset-eq
 ```
 
-`reset-color` resets one theme's color; it is not factory reset. `reset-eq` produces the full seven-band
+`volume` prints the confirmed private-BLE absolute-volume frame; its argument is the same direct
+`0..100` percentage reported by aggregate-state tag `0x42`. `reset-color` resets one theme's color;
+it is not factory reset. `reset-eq` produces the full seven-band
 all-zero snapshot used after App reset + confirmation. Arbitrary EQ gain frames can be constructed for
-research, but the official App's complete min/max and step mapping remain unknown.
+research. Helpers in `ss5_actions.py` reproduce HK One 2.5.4's 25-position EQ slider mapping.
 
 ## `att_extract.py`
 

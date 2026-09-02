@@ -7,7 +7,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 
 from ss5_protocol import ProtocolError, TLV, decode_frame, encode_frame, encode_tlvs, parse_hex
-from ss5_actions import build_color_reset, build_eq_reset, build_eq_write
+from ss5_actions import (
+    app_eq_percent_to_gain_db,
+    app_eq_step_to_gain_db,
+    build_color_reset,
+    build_eq_reset,
+    build_eq_write,
+    build_volume,
+)
 
 
 class ProtocolTests(unittest.TestCase):
@@ -45,6 +52,11 @@ class ProtocolTests(unittest.TestCase):
         frame = decode_frame(raw)
         self.assertEqual(frame.separator, 0)
         self.assertEqual(len(frame.data), 97)
+        self.assertEqual(frame.data[:6], parse_hex("c2 07 80 bb 00 00"))
+        self.assertEqual(
+            [frame.data[6 + 13 * index] for index in range(7)],
+            [0, 1, 1, 1, 1, 1, 2],
+        )
         self.assertEqual(frame.raw, raw)
 
         response_raw = b"\xaa\xe2\x62\x00\xc2" + frame.data
@@ -63,6 +75,22 @@ class ProtocolTests(unittest.TestCase):
 
     def test_color_reset_is_not_factory_reset(self):
         self.assertEqual(build_color_reset("ocean"), parse_hex("aa 33 04 00 50 01 10"))
+
+    def test_private_ble_absolute_volume(self):
+        self.assertEqual(build_volume(0), parse_hex("aa 43 04 00 42 01 00"))
+        self.assertEqual(build_volume(3), parse_hex("aa 43 04 00 42 01 03"))
+        self.assertEqual(build_volume(100), parse_hex("aa 43 04 00 42 01 64"))
+        with self.assertRaises(ProtocolError):
+            build_volume(101)
+
+    def test_app_eq_slider_mapping(self):
+        self.assertEqual(app_eq_step_to_gain_db(1, -12), -6.0)
+        self.assertEqual(app_eq_step_to_gain_db(1, 7), 3.5)
+        self.assertEqual(app_eq_step_to_gain_db(0, -12), -9.0)
+        self.assertEqual(app_eq_step_to_gain_db(0, 12), 6.0)
+        self.assertEqual(app_eq_percent_to_gain_db(2, 0), -6.0)
+        self.assertEqual(app_eq_percent_to_gain_db(2, 50), 0.0)
+        self.assertEqual(app_eq_percent_to_gain_db(2, 100), 6.0)
 
 
 if __name__ == "__main__":

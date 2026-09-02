@@ -66,6 +66,7 @@ python tools/app_actions.py reset-eq
 - [FACTS.md](FACTS.md): authoritative evidence baseline
 - [docs/protocol.md](docs/protocol.md): protocol layout and confirmed commands
 - [docs/app-reference.md](docs/app-reference.md): app-derived properties, presets, defaults, and EQ
+- [docs/audio-volume.md](docs/audio-volume.md): AVRCP volume scale and silent step experiment
 - [docs/capture-and-analysis.md](docs/capture-and-analysis.md): reproducible capture workflow
 - [docs/safety.md](docs/safety.md): safety boundaries
 - [docs/research-questions.md](docs/research-questions.md): open questions and suggested experiments
