@@ -1,0 +1,14 @@
+# Read-only requests
+aa 31 00
+aa 41 00
+aa e1 00
+
+# Successful ACK for cmd 0x33
+aa 00 02 33 00
+
+# De-identified aggregate response
+aa 42 11 00 41 01 01 42 01 1c 43 01 00 44 00 45 00 36 01 01
+
+# Factory-default lighting state observed on the tested unit
+aa 32 28 00 45 01 64 4b 01 01 4c 02 10 36 4c 02 11 32 4c 02 12 4b 4c 02 13 3c 4c 02 14 48 4c 02 15 00 4d 01 02 4f 01 10 99 01 01
+

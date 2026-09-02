@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "scope": {
+    "product": "Harman Kardon SoundSticks 5",
+    "variant": "standard non-Wi-Fi test unit",
+    "portability": "Values require re-validation on other SKUs and firmware."
+  },
+  "lighting": {
+    "brightness": {
+      "minimum_observed": 0,
+      "maximum_observed": 100,
+      "factory_default": 100,
+      "app_slider_model": "linear integer 0..100",
+      "controlled_drag_samples": [
+        {"target_percent": 15, "protocol_value": 15},
+        {"target_percent": 35, "protocol_value": 35},
+        {"target_percent": 55, "protocol_value": 54},
+        {"target_percent": 75, "protocol_value": 75},
+        {"target_percent": 95, "protocol_value": 95},
+        {"target_percent": 0, "protocol_value": 1, "note": "App touch endpoint; protocol value 0 observed separately"}
+      ]
+    },
+    "speed": {
+      "values": {
+        "low": 1,
+        "medium": 2,
+        "high": 3
+      },
+      "factory_default": 2
+    },
+    "power_factory_default": true,
+    "theme_factory_default": 16,
+    "color_slider": {
+      "model": "linear integer 0..100",
+      "controlled_drag_samples": [
+        {"target_percent": 25, "protocol_value": 25},
+        {"target_percent": 50, "protocol_value": 50},
+        {"target_percent": 75, "protocol_value": 75}
+      ]
+    },
+    "color_reset": {
+      "frame_template": "aa 33 04 00 50 01 <theme>",
+      "isolated_confirmed_theme_ids": [16, 19],
+      "not_factory_reset": true
+    },
+    "themes": [
+      {"id": 16, "resource_name": "ocean", "display_name_zh": "碧波荡漾", "default_color": 54},
+      {"id": 17, "resource_name": "aurora", "display_name_zh": "极光幻境", "default_color": 50},
+      {"id": 18, "resource_name": "blossom", "display_name_zh": "落英缤纷", "default_color": 75},
+      {"id": 19, "resource_name": "sunrise", "display_name_zh": "旭日东升", "default_color": 60},
+      {"id": 20, "resource_name": "fireplace", "display_name_zh": "雪夜炉火", "default_color": 72},
+      {"id": 21, "resource_name": "static", "display_name_zh": "静谧时光", "default_color": 0}
+    ]
+  },
+  "equalizer": {
+    "gain_encoding": "float32 little-endian",
+    "factory_gain_db": 0.0,
+    "write_frame": {
+      "command": 227,
+      "length": 97,
+      "separator_after_length": 0,
+      "body_prefix_hex": "c2 07 80 bb 00 00 00",
+      "total_frame_bytes": 101
+    },
+    "response_frame": {
+      "command": 226,
+      "length": 98,
+      "separator_after_length": 0,
+      "response_prefix_hex": "c2",
+      "then": "same 97-byte body as write frame"
+    },
+    "app_reset": "reset edits all gains to zero; confirmation sends the full E3 snapshot",
+    "ui_gain_range_status": "unknown",
+    "bands": [
+      {"index": 0, "frequency_hz": 125, "q_observed": 0.707, "mode_byte": 1},
+      {"index": 1, "frequency_hz": 250, "q_observed": 2.0, "mode_byte": 1},
+      {"index": 2, "frequency_hz": 500, "q_observed": 2.0, "mode_byte": 1},
+      {"index": 3, "frequency_hz": 1000, "q_observed": 2.0, "mode_byte": 1},
+      {"index": 4, "frequency_hz": 2000, "q_observed": 2.0, "mode_byte": 1},
+      {"index": 5, "frequency_hz": 4000, "q_observed": 2.0, "mode_byte": 2},
+      {"index": 6, "frequency_hz": 8000, "q_observed": 0.707, "mode_byte": null}
+    ]
+  }
+}
