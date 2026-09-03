@@ -145,5 +145,20 @@
     "payload": "00 c1 <utf8_byte_length> <utf8_name>",
     "success_ack": "aa 00 02 13 00",
     "temporary_test_name_restored": true
+  },
+  "sleep_media_probe": {
+    "precondition": {
+      "auto_off_configured_seconds": 600,
+      "auto_off_remaining_seconds": 0,
+      "classic_audio_connected": false,
+      "ble_advertising_name_present": false,
+      "fast_pair_service_data_present": true,
+      "gatt_control_service_reachable": true
+    },
+    "actions": ["play", "next", "previous"],
+    "all_actions_acknowledged": true,
+    "playback_state_after_each": "paused_or_idle",
+    "auto_off_remaining_seconds_after_actions": 0,
+    "reliable_wake_command": false
   }
 }
