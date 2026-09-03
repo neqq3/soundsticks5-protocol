@@ -6,7 +6,15 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 
-from ss5_protocol import ProtocolError, TLV, decode_frame, encode_frame, encode_tlvs, parse_hex
+from ss5_protocol import (
+    READ_ONLY_QUERIES,
+    ProtocolError,
+    TLV,
+    decode_frame,
+    encode_frame,
+    encode_tlvs,
+    parse_hex,
+)
 from ss5_actions import (
     app_eq_percent_to_gain_db,
     app_eq_step_to_gain_db,
@@ -22,6 +30,10 @@ class ProtocolTests(unittest.TestCase):
         frame = decode_frame(parse_hex("aa 41 00"))
         self.assertEqual(frame.command, 0x41)
         self.assertEqual(frame.data, b"")
+
+    def test_product_settings_queries_are_read_only(self):
+        self.assertEqual(READ_ONLY_QUERIES["feedback-tone"], parse_hex("aa f1 00"))
+        self.assertEqual(READ_ONLY_QUERIES["auto-off"], parse_hex("aa b8 00"))
 
     def test_aggregate_tlvs(self):
         frame = decode_frame(

@@ -13,11 +13,16 @@ python tools/ss5_ble.py discover --address <address-from-the-fresh-scan>
 python tools/ss5_ble.py query --address <address-from-the-fresh-scan> --kind aggregate
 python tools/ss5_ble.py query --address <address-from-the-fresh-scan> --kind light
 python tools/ss5_ble.py query --address <address-from-the-fresh-scan> --kind eq
+python tools/ss5_ble.py query --address <address-from-the-fresh-scan> --kind feedback-tone
+python tools/ss5_ble.py query --address <address-from-the-fresh-scan> --kind auto-off
 ```
 
 The tool deliberately has no arbitrary-write option. It fresh-scans the requested address and passes
 the returned `BLEDevice` object to Bleak, reducing stale-RPA failures. It refuses to query a connected
 device unless the private control service UUID is present.
+
+The two product-settings queries are preserved as raw research results: `feedback-tone` has a strong
+UI correlation, while the fields returned by `auto-off` are not yet decoded into a duration.
 
 The one explicit setting operation is confirmed private-BLE hardware volume. It requires a confirmation
 flag, reports the ACK/state notifications, and never starts an audio stream:

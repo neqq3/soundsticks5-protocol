@@ -16,6 +16,8 @@ NOTIFY_UUID = "65786365-6c70-6f69-6e74-2e636f6d0001"
 COMMAND_UUID = "65786365-6c70-6f69-6e74-2e636f6d0002"
 
 READ_ONLY_QUERIES = {
+    "auto-off": bytes.fromhex("aa b8 00"),
+    "feedback-tone": bytes.fromhex("aa f1 00"),
     "light": bytes.fromhex("aa 31 00"),
     "aggregate": bytes.fromhex("aa 41 00"),
     "eq": bytes.fromhex("aa e1 00"),
