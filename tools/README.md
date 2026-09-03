@@ -21,8 +21,8 @@ The tool deliberately has no arbitrary-write option. It fresh-scans the requeste
 the returned `BLEDevice` object to Bleak, reducing stale-RPA failures. It refuses to query a connected
 device unless the private control service UUID is present.
 
-The two product-settings queries are preserved as raw research results: `feedback-tone` has a strong
-UI correlation, while the fields returned by `auto-off` are not yet decoded into a duration.
+The product-settings query output includes decoded state: `feedback-tone` reports an `enabled` boolean;
+`auto-off` reports configured and remaining seconds. Raw frames are always retained alongside it.
 
 The one explicit setting operation is confirmed private-BLE hardware volume. It requires a confirmation
 flag, reports the ACK/state notifications, and never starts an audio stream:
@@ -55,6 +55,9 @@ connection or send path.
 python tools/app_actions.py light on
 python tools/app_actions.py brightness 50
 python tools/app_actions.py volume 25
+python tools/app_actions.py playback pause
+python tools/app_actions.py feedback-tone on
+python tools/app_actions.py auto-off 10m
 python tools/app_actions.py speed medium
 python tools/app_actions.py theme sunrise
 python tools/app_actions.py color sunrise 42
@@ -68,6 +71,10 @@ python tools/app_actions.py reset-eq
 it is not factory reset. `reset-eq` produces the full seven-band
 all-zero snapshot used after App reset + confirmation. Arbitrary EQ gain frames can be constructed for
 research. Helpers in `ss5_actions.py` reproduce HK One 2.5.4's 25-position EQ slider mapping.
+
+`playback`, `feedback-tone`, and `auto-off` are offline builders for confirmed App-equivalent frames.
+They do not connect to Bluetooth. The automatic-shutdown builder accepts only the five durations shown
+by the tested App instead of allowing arbitrary uint16 values.
 
 ## `att_extract.py`
 

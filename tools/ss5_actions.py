@@ -11,7 +11,7 @@ from __future__ import annotations
 import struct
 from collections.abc import Sequence
 
-from ss5_protocol import ProtocolError, TLV, encode_frame, encode_tlvs
+from ss5_protocol import ProtocolError, TLV, decode_frame, encode_frame, encode_tlvs
 
 THEMES = {
     "ocean": (0x10, 54),
@@ -23,6 +23,7 @@ THEMES = {
 }
 THEME_NAMES_BY_ID = {value[0]: name for name, value in THEMES.items()}
 SPEEDS = {"low": 1, "medium": 2, "high": 3}
+AUTO_OFF_SECONDS = {"never": 0, "10m": 600, "1h": 3600, "2h": 7200, "4h": 14400}
 
 EQ_FREQUENCIES_HZ = (125.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0)
 EQ_Q = (0.707, 2.0, 2.0, 2.0, 2.0, 2.0, 0.707)
@@ -79,6 +80,56 @@ def build_speed(value: str | int) -> bytes:
 def build_volume(value: int) -> bytes:
     """Build App's private-BLE absolute-volume command (direct percent)."""
     return encode_frame(0x43, b"\x00" + encode_tlvs([TLV(0x42, bytes((_percent(value),)))]))
+
+
+def build_playback(play: bool) -> bytes:
+    """Build App's private-BLE play or pause command."""
+    state = 0x02 if play else 0x01
+    return encode_frame(0x43, b"\x00" + encode_tlvs([TLV(0x41, bytes((state,)))]))
+
+
+def build_feedback_tone(enabled: bool) -> bytes:
+    return encode_frame(0xF3, bytes((int(enabled),)))
+
+
+def build_auto_off(value: str | int) -> bytes:
+    """Build the inactivity timer setting using an allow-listed duration."""
+    if isinstance(value, str) and value.lower() in AUTO_OFF_SECONDS:
+        seconds = AUTO_OFF_SECONDS[value.lower()]
+    else:
+        try:
+            seconds = int(value)
+        except (TypeError, ValueError) as exc:
+            raise ProtocolError("auto-off must be never/10m/1h/2h/4h or its exact seconds") from exc
+    if seconds not in AUTO_OFF_SECONDS.values():
+        raise ProtocolError("auto-off seconds must be one of 0, 600, 3600, 7200 or 14400")
+    return encode_frame(0xBA, struct.pack("<H", seconds))
+
+
+def parse_feedback_tone_state(raw: bytes) -> bool:
+    frame = decode_frame(raw)
+    if frame.command != 0xF2 or len(frame.data) != 1 or frame.data[0] not in (0, 1):
+        raise ProtocolError("expected F2 with one boolean state byte")
+    return bool(frame.data[0])
+
+
+def parse_playback_state(raw: bytes) -> int:
+    """Return 1 (paused/idle) or 2 (playing) from a 42/tag 41 state frame."""
+    frame = decode_frame(raw)
+    if frame.command != 0x42:
+        raise ProtocolError("expected a 0x42 aggregate-state frame")
+    for item in frame.tlvs():
+        if item.tag == 0x41 and len(item.value) == 1 and item.value[0] in (1, 2):
+            return item.value[0]
+    raise ProtocolError("0x42 frame has no known tag 0x41 playback state")
+
+
+def parse_auto_off_state(raw: bytes) -> tuple[int, int]:
+    """Return configured and remaining inactivity seconds from a B9 response."""
+    frame = decode_frame(raw)
+    if frame.command != 0xB9 or len(frame.data) != 4:
+        raise ProtocolError("expected B9 with two little-endian uint16 values")
+    return struct.unpack("<HH", frame.data)
 
 
 def build_theme(value: str | int) -> bytes:

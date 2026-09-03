@@ -18,10 +18,16 @@ from ss5_protocol import (
 from ss5_actions import (
     app_eq_percent_to_gain_db,
     app_eq_step_to_gain_db,
+    build_auto_off,
     build_color_reset,
     build_eq_reset,
     build_eq_write,
+    build_feedback_tone,
+    build_playback,
     build_volume,
+    parse_auto_off_state,
+    parse_feedback_tone_state,
+    parse_playback_state,
 )
 
 
@@ -94,6 +100,32 @@ class ProtocolTests(unittest.TestCase):
         self.assertEqual(build_volume(100), parse_hex("aa 43 04 00 42 01 64"))
         with self.assertRaises(ProtocolError):
             build_volume(101)
+
+    def test_private_ble_playback(self):
+        self.assertEqual(build_playback(True), parse_hex("aa 43 04 00 41 01 02"))
+        self.assertEqual(build_playback(False), parse_hex("aa 43 04 00 41 01 01"))
+        self.assertEqual(parse_playback_state(parse_hex("aa 42 04 00 41 01 01")), 1)
+        self.assertEqual(parse_playback_state(parse_hex("aa 42 04 00 41 01 02")), 2)
+
+    def test_feedback_tone(self):
+        self.assertEqual(build_feedback_tone(False), parse_hex("aa f3 01 00"))
+        self.assertEqual(build_feedback_tone(True), parse_hex("aa f3 01 01"))
+        self.assertFalse(parse_feedback_tone_state(parse_hex("aa f2 01 00")))
+        self.assertTrue(parse_feedback_tone_state(parse_hex("aa f2 01 01")))
+
+    def test_auto_off(self):
+        expected = {
+            "never": "aa ba 02 00 00",
+            "10m": "aa ba 02 58 02",
+            "1h": "aa ba 02 10 0e",
+            "2h": "aa ba 02 20 1c",
+            "4h": "aa ba 02 40 38",
+        }
+        for duration, raw in expected.items():
+            self.assertEqual(build_auto_off(duration), parse_hex(raw))
+        self.assertEqual(parse_auto_off_state(parse_hex("aa b9 04 40 38 3b 38")), (14400, 14395))
+        with self.assertRaises(ProtocolError):
+            build_auto_off(1800)
 
     def test_app_eq_slider_mapping(self):
         self.assertEqual(app_eq_step_to_gain_db(1, -12), -6.0)

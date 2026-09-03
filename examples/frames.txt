@@ -5,6 +5,12 @@ aa e1 00
 aa f1 00
 aa b8 00
 
+# Playback, feedback tone and inactivity timer settings
+aa 43 04 00 41 01 02
+aa 43 04 00 41 01 01
+aa f3 01 01
+aa ba 02 58 02
+
 # Successful ACK for cmd 0x33
 aa 00 02 33 00
 

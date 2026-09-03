@@ -9,12 +9,15 @@ from __future__ import annotations
 import argparse
 
 from ss5_actions import (
+    build_auto_off,
     build_brightness,
     build_color,
     build_color_reset,
     build_eq_reset,
     build_eq_write,
+    build_feedback_tone,
     build_light,
+    build_playback,
     build_speed,
     build_theme,
     build_volume,
@@ -34,6 +37,15 @@ def parser() -> argparse.ArgumentParser:
 
     volume = sub.add_parser("volume")
     volume.add_argument("value", type=int, help="absolute hardware volume, 0..100")
+
+    playback = sub.add_parser("playback")
+    playback.add_argument("state", choices=("play", "pause"))
+
+    feedback = sub.add_parser("feedback-tone")
+    feedback.add_argument("state", choices=("on", "off"))
+
+    auto_off = sub.add_parser("auto-off")
+    auto_off.add_argument("duration", choices=("never", "10m", "1h", "2h", "4h"))
 
     speed = sub.add_parser("speed")
     speed.add_argument("level", choices=("low", "medium", "high", "1", "2", "3"))
@@ -64,6 +76,12 @@ def main() -> int:
             frame = build_brightness(args.value)
         elif args.action == "volume":
             frame = build_volume(args.value)
+        elif args.action == "playback":
+            frame = build_playback(args.state == "play")
+        elif args.action == "feedback-tone":
+            frame = build_feedback_tone(args.state == "on")
+        elif args.action == "auto-off":
+            frame = build_auto_off(args.duration)
         elif args.action == "speed":
             frame = build_speed(args.level)
         elif args.action == "theme":

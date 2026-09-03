@@ -13,7 +13,12 @@ from typing import Any
 
 from bleak import BleakClient, BleakScanner
 
-from ss5_actions import build_volume
+from ss5_actions import (
+    build_volume,
+    parse_auto_off_state,
+    parse_feedback_tone_state,
+    parse_playback_state,
+)
 from ss5_protocol import (
     COMMAND_UUID,
     CONTROL_SERVICE_UUID,
@@ -97,7 +102,26 @@ async def query(address: str, timeout: float, kind: str, wait: float) -> dict[st
             raw = bytes(data)
             row: dict[str, object] = {"hex": raw.hex(" ")}
             try:
-                row["frame"] = decode_frame(raw).as_dict()
+                frame = decode_frame(raw)
+                row["frame"] = frame.as_dict()
+                if kind == "feedback-tone" and frame.command == 0xF2:
+                    row["state"] = {"enabled": parse_feedback_tone_state(raw)}
+                elif kind == "auto-off" and frame.command == 0xB9:
+                    configured, remaining = parse_auto_off_state(raw)
+                    row["state"] = {
+                        "configured_seconds": configured,
+                        "remaining_seconds": remaining,
+                    }
+                elif kind == "aggregate" and frame.command == 0x42:
+                    try:
+                        playback = parse_playback_state(raw)
+                    except ProtocolError:
+                        pass  # partial 0x42 notifications may contain only another tag
+                    else:
+                        row["state"] = {
+                            "playback_code": playback,
+                            "playback": "playing" if playback == 2 else "paused_or_idle",
+                        }
             except ProtocolError as exc:
                 row["decode_error"] = str(exc)
             notifications.append(row)

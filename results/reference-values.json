@@ -109,5 +109,28 @@
     "maximum_observed": 100,
     "boundary_behavior": "saturates at 0 and 100",
     "note": "Maximum was tested with the Bluetooth sink muted, software volume at zero, no sink inputs, and no audio playback or injection. Hardware volume was restored to zero afterward."
+  },
+  "playback": {
+    "state_field": "cmd 0x42 tag 0x41",
+    "states": {"paused_or_idle": 1, "playing": 2},
+    "set_play_hex": "aa 43 04 00 41 01 02",
+    "set_pause_hex": "aa 43 04 00 41 01 01",
+    "success_ack": "aa 00 02 43 00",
+    "note": "An acknowledged play request can return to paused when the audio source has no media stream."
+  },
+  "feedback_tone": {
+    "query_hex": "aa f1 00",
+    "set_command": 243,
+    "state_command": 242,
+    "states": {"off": 0, "on": 1}
+  },
+  "auto_off": {
+    "query_hex": "aa b8 00",
+    "set_command": 186,
+    "set_value_encoding": "uint16 little-endian seconds",
+    "response_encoding": "configured_seconds uint16le, remaining_seconds uint16le",
+    "success_ack": "aa 00 02 ba 00",
+    "options_seconds": {"never": 0, "10m": 600, "1h": 3600, "2h": 7200, "4h": 14400},
+    "restored_after_test_seconds": 600
   }
 }

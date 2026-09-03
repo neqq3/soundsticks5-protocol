@@ -75,6 +75,9 @@ python tools/gatt_discovery.py capture.btsnoop
 ```bash
 python tools/app_actions.py brightness 50
 python tools/app_actions.py color ocean 50
+python tools/app_actions.py playback pause
+python tools/app_actions.py feedback-tone on
+python tools/app_actions.py auto-off 10m
 python tools/app_actions.py reset-color ocean
 python tools/app_actions.py reset-eq
 ```
