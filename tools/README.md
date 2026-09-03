@@ -56,6 +56,8 @@ python tools/app_actions.py light on
 python tools/app_actions.py brightness 50
 python tools/app_actions.py volume 25
 python tools/app_actions.py playback pause
+python tools/app_actions.py playback previous
+python tools/app_actions.py rename "SoundSticks 5"
 python tools/app_actions.py feedback-tone on
 python tools/app_actions.py auto-off 10m
 python tools/app_actions.py speed medium
@@ -72,7 +74,8 @@ it is not factory reset. `reset-eq` produces the full seven-band
 all-zero snapshot used after App reset + confirmation. Arbitrary EQ gain frames can be constructed for
 research. Helpers in `ss5_actions.py` reproduce HK One 2.5.4's 25-position EQ slider mapping.
 
-`playback`, `feedback-tone`, and `auto-off` are offline builders for confirmed App-equivalent frames.
+`playback`, `rename`, `feedback-tone`, and `auto-off` are offline builders for confirmed
+App-equivalent frames. `playback` accepts `play`, `pause`, `previous`, and `next`.
 They do not connect to Bluetooth. The automatic-shutdown builder accepts only the five durations shown
 by the tested App instead of allowing arbitrary uint16 values.
 

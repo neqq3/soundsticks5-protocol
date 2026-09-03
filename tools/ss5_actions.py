@@ -24,6 +24,7 @@ THEMES = {
 THEME_NAMES_BY_ID = {value[0]: name for name, value in THEMES.items()}
 SPEEDS = {"low": 1, "medium": 2, "high": 3}
 AUTO_OFF_SECONDS = {"never": 0, "10m": 600, "1h": 3600, "2h": 7200, "4h": 14400}
+MEDIA_ACTIONS = {"pause": 0x01, "play": 0x02, "previous": 0x03, "next": 0x04}
 
 EQ_FREQUENCIES_HZ = (125.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0)
 EQ_Q = (0.707, 2.0, 2.0, 2.0, 2.0, 2.0, 0.707)
@@ -84,8 +85,24 @@ def build_volume(value: int) -> bytes:
 
 def build_playback(play: bool) -> bytes:
     """Build App's private-BLE play or pause command."""
-    state = 0x02 if play else 0x01
-    return encode_frame(0x43, b"\x00" + encode_tlvs([TLV(0x41, bytes((state,)))]))
+    return build_media_action("play" if play else "pause")
+
+
+def build_media_action(action: str) -> bytes:
+    """Build App's play, pause, previous-track, or next-track command."""
+    try:
+        value = MEDIA_ACTIONS[action.lower()]
+    except (AttributeError, KeyError) as exc:
+        raise ProtocolError("media action must be play/pause/previous/next") from exc
+    return encode_frame(0x43, b"\x00" + encode_tlvs([TLV(0x41, bytes((value,)))]))
+
+
+def build_rename(name: str) -> bytes:
+    """Build the App's confirmed UTF-8 product rename command."""
+    encoded = name.encode("utf-8")
+    if not 1 <= len(encoded) <= 252:
+        raise ProtocolError("UTF-8 product name must occupy 1..252 bytes")
+    return encode_frame(0x13, b"\x00\xc1" + bytes((len(encoded),)) + encoded)
 
 
 def build_feedback_tone(enabled: bool) -> bytes:

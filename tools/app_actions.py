@@ -17,7 +17,9 @@ from ss5_actions import (
     build_eq_write,
     build_feedback_tone,
     build_light,
+    build_media_action,
     build_playback,
+    build_rename,
     build_speed,
     build_theme,
     build_volume,
@@ -39,7 +41,10 @@ def parser() -> argparse.ArgumentParser:
     volume.add_argument("value", type=int, help="absolute hardware volume, 0..100")
 
     playback = sub.add_parser("playback")
-    playback.add_argument("state", choices=("play", "pause"))
+    playback.add_argument("state", choices=("play", "pause", "previous", "next"))
+
+    rename = sub.add_parser("rename")
+    rename.add_argument("name")
 
     feedback = sub.add_parser("feedback-tone")
     feedback.add_argument("state", choices=("on", "off"))
@@ -77,7 +82,9 @@ def main() -> int:
         elif args.action == "volume":
             frame = build_volume(args.value)
         elif args.action == "playback":
-            frame = build_playback(args.state == "play")
+            frame = build_media_action(args.state)
+        elif args.action == "rename":
+            frame = build_rename(args.name)
         elif args.action == "feedback-tone":
             frame = build_feedback_tone(args.state == "on")
         elif args.action == "auto-off":

@@ -76,6 +76,8 @@ python tools/gatt_discovery.py capture.btsnoop
 python tools/app_actions.py brightness 50
 python tools/app_actions.py color ocean 50
 python tools/app_actions.py playback pause
+python tools/app_actions.py playback next
+python tools/app_actions.py rename "SoundSticks 5"
 python tools/app_actions.py feedback-tone on
 python tools/app_actions.py auto-off 10m
 python tools/app_actions.py reset-color ocean
@@ -84,6 +86,8 @@ python tools/app_actions.py reset-eq
 
 亮度和颜色直接使用整数 `0..100`，第三方 UI 的 50% 应发送 50。App 的触摸像素取整不应
 复制成协议行为。EQ 任意增益的 App 标尺仍未完整标定；详情见 App 属性文档。
+
+OTA、固件传输、整机恢复出厂和解绑明确不在本仓库研究与工具范围内。
 
 ## 文档导航
 

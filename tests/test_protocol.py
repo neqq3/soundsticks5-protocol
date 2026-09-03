@@ -23,7 +23,9 @@ from ss5_actions import (
     build_eq_reset,
     build_eq_write,
     build_feedback_tone,
+    build_media_action,
     build_playback,
+    build_rename,
     build_volume,
     parse_auto_off_state,
     parse_feedback_tone_state,
@@ -106,6 +108,21 @@ class ProtocolTests(unittest.TestCase):
         self.assertEqual(build_playback(False), parse_hex("aa 43 04 00 41 01 01"))
         self.assertEqual(parse_playback_state(parse_hex("aa 42 04 00 41 01 01")), 1)
         self.assertEqual(parse_playback_state(parse_hex("aa 42 04 00 41 01 02")), 2)
+
+    def test_private_ble_track_navigation(self):
+        self.assertEqual(build_media_action("previous"), parse_hex("aa 43 04 00 41 01 03"))
+        self.assertEqual(build_media_action("next"), parse_hex("aa 43 04 00 41 01 04"))
+        with self.assertRaises(ProtocolError):
+            build_media_action("stop")
+
+    def test_product_rename(self):
+        self.assertEqual(
+            build_rename("SoundSticks 5"),
+            parse_hex("aa 13 10 00 c1 0d 53 6f 75 6e 64 53 74 69 63 6b 73 20 35"),
+        )
+        self.assertEqual(build_rename("测试")[:7], parse_hex("aa 13 09 00 c1 06 e6"))
+        with self.assertRaises(ProtocolError):
+            build_rename("")
 
     def test_feedback_tone(self):
         self.assertEqual(build_feedback_tone(False), parse_hex("aa f3 01 00"))

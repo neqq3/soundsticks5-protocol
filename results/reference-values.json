@@ -40,7 +40,7 @@
     },
     "color_reset": {
       "frame_template": "aa 33 04 00 50 01 <theme>",
-      "isolated_confirmed_theme_ids": [16, 19],
+      "isolated_confirmed_theme_ids": [16, 17, 18, 19, 20, 21],
       "not_factory_reset": true
     },
     "themes": [
@@ -115,6 +115,8 @@
     "states": {"paused_or_idle": 1, "playing": 2},
     "set_play_hex": "aa 43 04 00 41 01 02",
     "set_pause_hex": "aa 43 04 00 41 01 01",
+    "previous_hex": "aa 43 04 00 41 01 03",
+    "next_hex": "aa 43 04 00 41 01 04",
     "success_ack": "aa 00 02 43 00",
     "note": "An acknowledged play request can return to paused when the audio source has no media stream."
   },
@@ -131,6 +133,17 @@
     "response_encoding": "configured_seconds uint16le, remaining_seconds uint16le",
     "success_ack": "aa 00 02 ba 00",
     "options_seconds": {"never": 0, "10m": 600, "1h": 3600, "2h": 7200, "4h": 14400},
-    "restored_after_test_seconds": 600
+    "restored_after_test_seconds": 600,
+    "activity_observations": {
+      "lighting_write_resets_countdown": true,
+      "read_only_query_resets_countdown": false,
+      "sample_remaining_seconds": [573, 506]
+    }
+  },
+  "rename": {
+    "command": 19,
+    "payload": "00 c1 <utf8_byte_length> <utf8_name>",
+    "success_ack": "aa 00 02 13 00",
+    "temporary_test_name_restored": true
   }
 }
