@@ -99,6 +99,7 @@ OTA、固件传输、整机恢复出厂和解绑明确不在本仓库研究与�
 - [docs/safety.md](docs/safety.md)：安全边界
 - [docs/research-questions.md](docs/research-questions.md)：待复核问题与建议实验
 - [results/experiment-summary.md](results/experiment-summary.md)：去标识化实验摘要
+- [results/gatt-competition-2026-09-04.md](results/gatt-competition-2026-09-04.md)：多客户端、断联恢复与 RPA 连续轮换矩阵
 - [results/reference-values.json](results/reference-values.json)：机器可读参考值
 - [tools/README.md](tools/README.md)：工具说明
 

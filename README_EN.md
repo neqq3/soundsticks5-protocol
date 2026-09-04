@@ -78,6 +78,7 @@ OTA, firmware transfer, factory reset, and unbinding are explicitly out of scope
 - [docs/safety.md](docs/safety.md): safety boundaries
 - [docs/research-questions.md](docs/research-questions.md): open questions and suggested experiments
 - [results/experiment-summary.md](results/experiment-summary.md): sanitized experiment summaries
+- [results/gatt-competition-2026-09-04.md](results/gatt-competition-2026-09-04.md): multi-client, handoff recovery, and RPA rotation matrix
 - [results/reference-values.json](results/reference-values.json): machine-readable reference values
 - [tools/README.md](tools/README.md): tool reference
 
