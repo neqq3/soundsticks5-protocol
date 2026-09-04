@@ -94,12 +94,15 @@ OTA、固件传输、整机恢复出厂和解绑明确不在本仓库研究与�
 - [FACTS.md](FACTS.md)：最高优先级事实基线
 - [docs/protocol.md](docs/protocol.md)：协议结构和已确认命令
 - [docs/app-reference.md](docs/app-reference.md)：App 属性、主题、默认值和 EQ 参考
+- [docs/app-discovery-and-connection.md](docs/app-discovery-and-connection.md)：App 如何发现产品、显示在线并建立控制连接
 - [docs/audio-volume.md](docs/audio-volume.md)：AVRCP 音量标尺与无声步进实验
 - [docs/capture-and-analysis.md](docs/capture-and-analysis.md)：可复现抓取与分析方法
 - [docs/safety.md](docs/safety.md)：安全边界
 - [docs/research-questions.md](docs/research-questions.md)：待复核问题与建议实验
 - [results/experiment-summary.md](results/experiment-summary.md)：去标识化实验摘要
 - [results/gatt-competition-2026-09-04.md](results/gatt-competition-2026-09-04.md)：多客户端、断联恢复与 RPA 连续轮换矩阵
+- [results/sleep-timer-app-online-2026-09-04.md](results/sleep-timer-app-online-2026-09-04.md)：休眠计时、匿名广播与 App 在线状态对照
+- [results/long-idle-ble-write-2026-09-04.md](results/long-idle-ble-write-2026-09-04.md)：长时间静置后的 BLE 写入、物理灯光与 App 三方验证
 - [results/reference-values.json](results/reference-values.json)：机器可读参考值
 - [tools/README.md](tools/README.md)：工具说明
 

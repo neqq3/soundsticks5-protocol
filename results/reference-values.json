@@ -99,6 +99,10 @@
       "success_ack": "aa 00 02 43 00",
       "state_notification_template": "aa 42 04 00 42 01 <percent>",
       "captured_values": [3, 0],
+      "request_to_state_observations": [
+        {"requested": 1, "reported": 3},
+        {"requested": 0, "reported": 0}
+      ],
       "works_when_app_device_is_not_the_a2dp_source": true
     },
     "observed_volume_down_sequence": [18, 15, 12, 0, 0],
@@ -135,9 +139,20 @@
     "options_seconds": {"never": 0, "10m": 600, "1h": 3600, "2h": 7200, "4h": 14400},
     "restored_after_test_seconds": 600,
     "activity_observations": {
-      "lighting_write_resets_countdown": true,
       "read_only_query_resets_countdown": false,
-      "sample_remaining_seconds": [573, 506]
+      "timer_setting_from_zero_restarts_countdown": true,
+      "same_value_matrix_restarted_countdown": false,
+      "changed_value_30s_results": {
+        "lighting_speed": "delayed_restart_observed",
+        "feedback_tone": "delayed_restart_observed",
+        "eq_first_band": "delayed_restart_observed",
+        "brightness": "not_observed_within_24s",
+        "light_power": "not_observed_within_24s",
+        "theme_color": "not_observed_within_24s",
+        "theme_switch": "not_observed_within_24s",
+        "silent_volume": "not_observed_within_24s"
+      },
+      "early_600s_lighting_observation": "conflicts_with_later_zero-baseline_matrix"
     }
   },
   "rename": {
