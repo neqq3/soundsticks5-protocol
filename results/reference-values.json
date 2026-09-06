@@ -71,7 +71,8 @@
       "response_prefix_hex": "c2",
       "then": "same 97-byte body as write frame"
     },
-    "app_reset": "reset edits all gains to zero; confirmation sends the full E3 snapshot",
+    "app_reset": "HK One 2.5.4 frontend emits setEQ immediately after zeroing all gains; an earlier interaction observation suggested confirmation was required, so read back E2",
+    "app_drag_send_policy": "snap to integer positions; send immediately, throttle intermediate updates to about 300 ms, always send final drag position",
     "app_ui_steps": {"minimum": -12, "maximum": 12, "count": 25},
     "normal_gain_db_per_ui_step": 0.5,
     "normal_gain_db_range": [-6.0, 6.0],
