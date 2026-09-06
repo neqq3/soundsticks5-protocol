@@ -82,6 +82,8 @@
 
 ## 均衡器
 
+完整的五级证据矩阵见 [docs/eq-evidence.md](docs/eq-evidence.md)。
+
 - `aa e1 00` 查询当前 EQ，响应命令为 `0xe2`。
 - `cmd 0xe3` 设置 7 段 EQ；抓包中的增益使用 little-endian float32。
 - `0xe2/0xe3` 在 `LEN` 后有一个不计入长度的 `00` 分隔字节。实测 `e3` 为

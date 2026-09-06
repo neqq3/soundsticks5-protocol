@@ -73,6 +73,7 @@ OTA, firmware transfer, factory reset, and unbinding are explicitly out of scope
 - [FACTS.md](FACTS.md): authoritative evidence baseline
 - [docs/protocol.md](docs/protocol.md): protocol layout and confirmed commands
 - [docs/app-reference.md](docs/app-reference.md): app-derived properties, presets, defaults, and EQ
+- [docs/eq-evidence.md](docs/eq-evidence.md): graded EQ protocol and App-slider evidence (Chinese)
 - [docs/app-discovery-and-connection.md](docs/app-discovery-and-connection.md): app discovery, online state, and control connection model
 - [docs/audio-volume.md](docs/audio-volume.md): AVRCP volume scale and silent step experiment
 - [docs/capture-and-analysis.md](docs/capture-and-analysis.md): reproducible capture workflow

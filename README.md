@@ -94,6 +94,7 @@ OTA、固件传输、整机恢复出厂和解绑明确不在本仓库研究与�
 - [FACTS.md](FACTS.md)：最高优先级事实基线
 - [docs/protocol.md](docs/protocol.md)：协议结构和已确认命令
 - [docs/app-reference.md](docs/app-reference.md)：App 属性、主题、默认值和 EQ 参考
+- [docs/eq-evidence.md](docs/eq-evidence.md)：EQ 协议、App 滑杆行为与五级证据矩阵
 - [docs/app-discovery-and-connection.md](docs/app-discovery-and-connection.md)：App 如何发现产品、显示在线并建立控制连接
 - [docs/audio-volume.md](docs/audio-volume.md)：AVRCP 音量标尺与无声步进实验
 - [docs/capture-and-analysis.md](docs/capture-and-analysis.md)：可复现抓取与分析方法
